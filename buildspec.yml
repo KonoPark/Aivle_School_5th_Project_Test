@@ -1,20 +1,31 @@
 version: 0.2
+
 phases:
   install:
     runtime-versions:
       nodejs: 20
+      java: corretto17
     commands:
-      - npm install -g @angular/cli@17
+      - echo "Install dependencies"
   pre_build:
     commands:
-      - npm install
-  build:
-    commands:
-      - ng build -c production
-      - echo "Build completed."
-    finally:
-      - echo This is the finally block execution!
+      - echo "Build frontend (Next.js)"
+      - cd book/frontend
+      - npm ci
+      - npm run build
+      - cd ../..
+      - echo "Build backend (Spring Boot)"
+      - cd book
+      - ./gradlew clean bootJar -x test
+      - cd ..
+
 artifacts:
-  base-directory: dist/Aivle_School_5th_Project
   files:
-    - '**/*'
+    - appspec.yml
+    - deploy-scripts/**/*
+    - book/build/libs/*.jar
+    - book/frontend/.next/**/*
+    - book/frontend/public/**/*
+    - book/frontend/package.json
+    - book/frontend/package-lock.json
+    - book/frontend/next.config.mjs
