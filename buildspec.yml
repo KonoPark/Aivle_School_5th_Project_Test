@@ -16,6 +16,7 @@ phases:
       - cd ../..
       - echo "Build backend (Spring Boot)"
       - cd book
+      - chmod +x ./gradlew
       - ./gradlew clean bootJar -x test
       - cd ..
 
