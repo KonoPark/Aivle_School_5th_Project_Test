@@ -8,7 +8,7 @@ import {
     Dialog, DialogTitle, DialogContent, DialogActions, TextField,
     CircularProgress // For loading indicator when fetching list
 } from "@mui/material";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiUrl } from "@/lib/api";
 
 // TODO: 로그인 구현 후 실제 accessToken으로 교체해야 합니다.
 const FAKE_ACCESS_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
@@ -117,9 +117,7 @@ export default function MyPageView() {
         }
 
         try {
-            const response = await fetch(
-                `http://localhost:8080/book/delete/${idToDelete}`,
-                {
+            const response = await apiFetch(`/book/delete/${idToDelete}`,{
                     method: "DELETE",
                     // 백엔드에서 아직 토큰 안 쓰면 헤더는 생략해도 됨
                     headers: {
@@ -183,7 +181,9 @@ export default function MyPageView() {
                 title: editingWork.title,
                 content: editingWork.description,
                 author: editingWork.author,
-                coverImageUrl: editingWork.image?.replace("http://localhost:8080", "")
+                coverImageUrl: editingWork.image
+                    ? (new URL(editingWork.image, window.location.origin).pathname)
+                    : null
             });
 
             formData.append("book", new Blob([bookJson], { type: "application/json" }));
@@ -198,9 +198,7 @@ export default function MyPageView() {
             formData.append("userId", user.userId);
 
             // 5) PUT 요청 보내기
-            const response = await fetch(
-                `http://localhost:8080/book/update/${editingWork.id}`,
-                {
+            const response = await apiFetch(`/book/update/${editingWork.id}`,{
                     method: "PUT",
                     body: formData, // ★ Content-Type 설정하면 안됨(브라우저가 자동 설정)
                 }
