@@ -25,6 +25,8 @@ artifacts:
     - appspec.yml
     - deploy-scripts/**/*
     - book/build/libs/*.jar
+
+    - book/frontend/src/**/*
     - book/frontend/.next/**/*
     - book/frontend/public/**/*
     - book/frontend/package.json
