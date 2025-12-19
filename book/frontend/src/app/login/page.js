@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -11,14 +12,12 @@ export default function LoginPage() {
         console.log("로그인 시도:", { email, password });
 
         try {
-            const response = await fetch("http://localhost:8080/user/login", {
+            const response = await apiFetch("/user/login", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     email: email,
                     password: password,
                 }),
-                credentials: "include"
             });
 
             const result = await response.json();

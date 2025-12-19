@@ -17,6 +17,7 @@ import {
     DialogActions,
     TextField,
 } from "@mui/material";
+import { apiFetch } from "@/lib/api";
 
 export default function BookDetailPage() {
     // 1. URL에서 bookid 추출
@@ -40,9 +41,7 @@ export default function BookDetailPage() {
         const fetchDetail = async () => {
             setLoading(true);
             try {
-                const res = await fetch(
-                    `http://localhost:8080/book/detail/${bookid}`
-                );
+                const res = await apiFetch(`/book/detail/${bookid}`, { method: "GET" });
 
                 if (!res.ok) {
                     const text = await res.text();

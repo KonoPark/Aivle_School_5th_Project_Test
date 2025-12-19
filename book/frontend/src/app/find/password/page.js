@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 export default function FindPasswordPage() {
     const [email, setEmail] = useState("");
@@ -20,7 +21,7 @@ export default function FindPasswordPage() {
         setTempPassword(null);
 
         try {
-            const response = await fetch("http://localhost:8080/user/find-pw", {
+            const response = await apiFetch("/user/find-pw", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

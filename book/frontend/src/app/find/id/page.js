@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { apiFetch } from "@/lib/api";
 
 export default function FindIdPage() {
     const [name, setName] = useState("");
@@ -19,7 +20,7 @@ export default function FindIdPage() {
         setEmailResult(null);
 
         try {
-            const response = await fetch("http://localhost:8080/user/find-id", {
+            const response = await apiFetch("/user/find-id", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, phone }),

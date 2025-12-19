@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/lib/api";
 
 export default function ChangePasswordPage() {
     const [currentPassword, setCurrentPassword] = useState("");
@@ -48,7 +49,7 @@ export default function ChangePasswordPage() {
         }
 
         try {
-            const res = await fetch("http://localhost:8080/user/change-pw", {
+            const res = await apiFetch("/user/change-pw", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

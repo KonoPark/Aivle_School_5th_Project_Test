@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Box, Typography, Stack, CardMedia, Pagination } from "@mui/material";
+import { apiFetch } from "@/lib/api";
 
 export default function MainPage() {
     const [books, setBooks] = useState([]);
@@ -14,7 +15,7 @@ export default function MainPage() {
     const defaultKeyword = "소설";
 
     useEffect(() => {
-        fetch(`http://localhost:8080/books/search?keyword=${encodeURIComponent(defaultKeyword)}`)
+        apiFetch(`/books/search?keyword=${encodeURIComponent(defaultKeyword)}`, { method: "GET" })
             .then((res) => res.json())
             .then((data) => {
                 console.log("📘 크롤링 데이터:", data);

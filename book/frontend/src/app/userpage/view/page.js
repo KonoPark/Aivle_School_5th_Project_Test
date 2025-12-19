@@ -8,6 +8,7 @@ import {
     Dialog, DialogTitle, DialogContent, DialogActions, TextField,
     CircularProgress // For loading indicator when fetching list
 } from "@mui/material";
+import { apiFetch } from "@/lib/api";
 
 // TODO: 로그인 구현 후 실제 accessToken으로 교체해야 합니다.
 const FAKE_ACCESS_TOKEN = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
@@ -46,13 +47,8 @@ export default function MyPageView() {
                 const parsed = JSON.parse(user);
                 const userId = parsed.userId;
 
-                const response = await fetch(
-                    `http://localhost:8080/book/list/my?userId=${userId}`,
-                    {
+                const response = await apiFetch(`/book/list/my?userId=${userId}`,{
                         method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
                     }
                 );
 
@@ -92,7 +88,7 @@ export default function MyPageView() {
                     description: item.content ?? "",
                     image:
                         item.coverImageUrl
-                            ? `http://localhost:8080${item.coverImageUrl}`
+                            ? apiUrl(item.coverImageUrl.startsWith("/") ? item.coverImageUrl : `/${item.coverImageUrl}`)
                             : "https://via.placeholder.com/140x200?text=No+Image",
 
                 }));
